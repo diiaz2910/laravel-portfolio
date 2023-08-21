@@ -17,3 +17,44 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+
+# Laravel specific
+/vendor
+/node_modules
+/public/storage
+/storage/*.key
+/storage/*.pem
+/bootstrap/cache
+
+# IDE / editor specific
+.idea/
+.vscode/
+*.sublime-project
+*.sublime-workspace
+
+# Homestead
+/Homestead.yaml
+/Homestead.json
+
+# Network related
+.vagrant/
+
+# Laravel Mix
+/public/hot
+/public/mix-manifest.json
+/public/css
+/public/js
+
+# Testing
+/phpunit.xml
+/phpunit.xml.dist
+
+# composer.lock should be committed to version control
+# You may choose to ignore it if desired
+# /composer.lock
+
+# MISC
+/npm-debug.log
+/yarn-error.log
+/yarn.lock
+/mix-manifest.json
