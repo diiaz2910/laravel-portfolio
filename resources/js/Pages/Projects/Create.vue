@@ -14,7 +14,7 @@
                         <InputLabel for="skill_id" value="Skill" />
                         <select v-model="form.skill_id" id="skill_id" name="skill_id"
                             class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 rounded-md">
-                            <option v-for="skill in skills" :key="skill.id" :value="skill.id"> {{ skill.name }}</option>
+                            <option v-for="skill in skills?.length ? skills : []" :key="skill.id" :value="skill.id"> {{ skill.name }}</option>
                         </select>
                     </div>
 
@@ -75,7 +75,16 @@ const form = useForm({
     project_url: "",
 });
 
-const submit = () => {
-    form.post(route('projects.store'));
+const submit = async () => {
+    try {
+        await form.post(route('projects.store'), {
+            onSuccess: () => {
+                // Reload the page after a successful form submission
+                location.reload();
+            },
+        });
+    } catch (error) {
+        console.error(error);
+    }
 };
 </script>

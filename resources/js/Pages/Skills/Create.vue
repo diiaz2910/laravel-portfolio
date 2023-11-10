@@ -18,7 +18,6 @@
                             class="mt-1 block w-full"
                             v-model="form.name"
                             autofocus
-                            autocomplete="username"
                         />
 
                         <InputError class="mt-2" :message="form.errors.name" />
@@ -62,7 +61,16 @@ const form = useForm({
     image: null
 });
 
-const submit = () => {
-    form.post(route('skills.store'));
+const submit = async () => {
+    try {
+        await form.post(route('skills.store'), {
+            onSuccess: () => {
+                // Reload the page after a successful form submission
+                location.reload();
+            },
+        });
+    } catch (error) {
+        console.error(error);
+    }
 };
 </script>
