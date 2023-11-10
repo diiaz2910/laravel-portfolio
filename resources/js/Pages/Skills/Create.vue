@@ -64,4 +64,5 @@ const form = useForm({
 const submit = () => {
     form.post(route('skills.store'));
 };
+
 </script>
