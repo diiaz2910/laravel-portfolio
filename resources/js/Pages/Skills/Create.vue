@@ -18,6 +18,7 @@
                             class="mt-1 block w-full"
                             v-model="form.name"
                             autofocus
+                            autocomplete="username"
                         />
 
                         <InputError class="mt-2" :message="form.errors.name" />
@@ -64,5 +65,4 @@ const form = useForm({
 const submit = () => {
     form.post(route('skills.store'));
 };
-
 </script>
