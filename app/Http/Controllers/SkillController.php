@@ -43,7 +43,7 @@ class SkillController extends Controller
                 'image' => $image
             ]);
 
-            return Redirect::back()->with('success', 'Skill added successfully.');
+            return Redirect::route('skills.index');
         }
 
         return redirect()->back();

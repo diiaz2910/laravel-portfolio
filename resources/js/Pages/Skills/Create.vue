@@ -61,6 +61,13 @@ const form = useForm({
     image: null
 });
 
+/* Previous function was synchronous and it doesn't wait till the form is completed
+const submit = () => {
+    form.post(route('skills.store'));
+};
+In the new function, which is asynchronous it let us use await to wait till method form.post finishes
+*/
+
 const submit = async () => {
     try {
         await form.post(route('skills.store'), {
