@@ -7,6 +7,7 @@ use Inertia\Inertia;
 use App\models\Project;
 use App\models\Skill;
 use Illuminate\Support\Facades\Redirect;
+use App\Http\Resources\ProjectResource;
 
 class ProjectController extends Controller
 {
@@ -14,8 +15,8 @@ class ProjectController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        return Inertia::render('Projects/Index');
+    {   $projects = ProjectResource::collection(Project::with('skill')->get());
+        return Inertia::render('Projects/Index', compact('projects'));
     }
 
     /**
