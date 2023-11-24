@@ -1,9 +1,9 @@
 <template>
-    <Head title="New Skill" />
+    <Head title="Edit Skill" />
 
     <AuthenticatedLayout>
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">New Skill</h2>
+            <h2 class="font-semibold text-xl text-gray-800 leading-tight">Edit Skill</h2>
         </template>
 
         <div class="py-12">
@@ -30,8 +30,8 @@
                             id="image"
                             type="file"
                             class="mt-1 block w-full"
-                            v-model="form.image"
-                            @input="form.image = $event.target.files[0]"
+                            :value="null"
+                            @change="onFileInputChange"
                         />
 
                         <InputError class="mt-2" :message="form.errors.image" />
@@ -39,7 +39,7 @@
 
                     <div class="flex items-center justify-end mt-4">
                         <PrimaryButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                            Store
+                            Update
                         </PrimaryButton>
                     </div>
                 </form>
@@ -55,26 +55,27 @@ import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
+import { router } from '@inertiajs/vue3'
 
-const form = useForm({
-    name: '',
-    image: null
+const props = defineProps({
+    skill: Object,
 });
 
-/* Previous function was synchronous and it doesn't wait till the form is completed
-const submit = () => {
-    form.post(route('skills.store'));
+const form = useForm({
+    name: props.skill?.name,
+    image: null,
+});
+
+const onFileInputChange = (event) => {
+    form.image = event.target.files[0];
 };
-In the new function, which is asynchronous it let us use await to wait till method form.post finishes
-*/
 
 const submit = async () => {
     try {
-        await form.post(route('skills.store'), {
-            onSuccess: () => {
-                // Reload the page after a successful form submission
-                location.reload();
-            },
+        await router.post(`/skills/${props.skill.id}`, {
+            _method: 'put',
+            name: form.name,
+            image: form.image,
         });
     } catch (error) {
         console.error(error);
