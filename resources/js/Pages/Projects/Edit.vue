@@ -9,6 +9,7 @@
         <div class="py-12">
             <div class="max-w-md mx-auto sm:px-6 lg:px-8 bg-white">
                 <form class="p-4" @submit.prevent="submit">
+
                     <!-- Select input field -->
                     <div>
                         <InputLabel for="skill_id" value="Skill" />
@@ -25,7 +26,7 @@
                         <TextInput id="name" type="text" class="mt-1 block w-full" v-model="form.name"
                             autocomplete="name" />
 
-                        <InputError class="mt-2" :message="form.errors.name" />
+                        <InputError class="mt-2" :message="form.errors?.name" />
                     </div>
 
                     <!-- URL input field -->
@@ -35,23 +36,20 @@
                         <TextInput id="project_url" type="text" class="mt-1 block w-full" v-model="form.project_url"
                             autocomplete="project_url" />
 
-                        <InputError class="mt-2" :message="form.errors.project_url" />
+                        <InputError class="mt-2" :message="form.errors?.project_url" />
                     </div>
 
                     <!-- Image upload field -->
                     <div class="mt-2">
                         <InputLabel for="image" value="Image" />
-
-                        <TextInput id="image" type="file" class="mt-1 block w-full" v-model="form.image"
-                            @input="form.image = $event.target.files[0]" />
-
-                        <InputError class="mt-2" :message="form.errors.image" />
+                        <TextInput id="image" type="file" class="mt-1 block w-full" v-model="form.image" />
+                        <InputError class="mt-2" :message="form.errors?.image" />
                     </div>
 
                     <!-- Store button field -->
                     <div class="flex items-center justify-end mt-4">
                         <PrimaryButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                            Store
+                            Update
                         </PrimaryButton>
                     </div>
 
@@ -68,33 +66,31 @@ import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
+import { router } from '@inertiajs/vue3'
 
-defineProps({
-    skills: Array
-})
-
-const form = useForm({
-    name: '',
-    image: null,
-    skill_id: "",
-    project_url: "",
+const props = defineProps({
+    skills: Array,
+    project: Object
 });
 
-/* Previous function was synchronous and it doesn't wait till the form is completed
-const submit = () => {
-    form.post(route('projects.store'));
-};
-In the new function, which is asynchronous it let us use await to wait till method form.post finishes
-*/
+const form = useForm({
+    name: props.project?.name,
+    image: null,
+    skill_id: props.project?.skill_id,
+    project_url: props.project?.project_url,
+});
 
 const submit = async () => {
     try {
-        await form.post(route('projects.store'), {
-            onSuccess: () => {
-                // Reload the page after a successful form submission
-                location.reload();
-            },
+        await router.post(`/projects/${props.project.id}`, {
+            _method: 'put',
+            name: form.name,
+            image: form.image,
+            skill_id: form.skill_id,
+            project_url: form.project_url,
         });
+
+        router.push({ name: 'projects.index' });
     } catch (error) {
         console.error(error);
     }

@@ -9,6 +9,8 @@
         <div class="py-12">
             <div class="max-w-md mx-auto sm:px-6 lg:px-8 bg-white">
                 <form class="p-4" @submit.prevent="submit">
+
+                    <!-- Field name -->
                     <div>
                         <InputLabel for="name" value="Name" />
 
@@ -23,6 +25,7 @@
                         <InputError class="mt-2" :message="form.errors.name" />
                     </div>
 
+                    <!-- Field Image -->
                     <div class="mt-2">
                         <InputLabel for="image" value="Image" />
 
@@ -37,11 +40,13 @@
                         <InputError class="mt-2" :message="form.errors.image" />
                     </div>
 
+                    <!-- Update Button -->
                     <div class="flex items-center justify-end mt-4">
                         <PrimaryButton class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
                             Update
                         </PrimaryButton>
                     </div>
+
                 </form>
             </div>
         </div>
